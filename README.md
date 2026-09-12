@@ -39,6 +39,7 @@ For an entangled Bell state, purity drops below 1 and entropy is greater than 0.
 
 - Python 3.10+
 - qiskit
+- qiskit-aer
 - numpy
 - matplotlib
 
@@ -48,7 +49,7 @@ For an entangled Bell state, purity drops below 1 and entropy is greater than 0.
 2. Install dependencies:
 
 ```bash
-pip install qiskit numpy matplotlib
+pip install qiskit qiskit-aer numpy matplotlib
 ```
 
 ## Run
@@ -58,6 +59,14 @@ python main.py
 ```
 
 The script prints intermediate results and saves figures to the project root.
+
+## Histogram Evidence
+
+`histogram.py` compares an ideal Aer simulation with a second Aer simulation
+that uses manually specified gate and readout error probabilities. It does not
+submit a job to real IBM Quantum hardware or use measured device calibration
+data. Describe the figure as an ideal-versus-noisy simulation comparison, not
+as a comparison with real IBM quantum hardware.
 
 ## Generated Files
 

@@ -1,7 +1,6 @@
 """
-Compares an ideal (noiseless) Bell-state simulation against a noisy simulation
-that approximates real IBM Quantum hardware, using gate/readout error rates
-typical of IBM's superconducting-qubit devices.
+Compares an ideal Bell-state simulation against a noisy Aer simulation with
+manually specified gate and readout error probabilities.
 """
 
 from qiskit import QuantumCircuit, transpile
@@ -19,13 +18,12 @@ qc_bell_measured.measure_all()
 
 SHOTS = 1000
 
-# Ideal simulation — no noise
+# Ideal simulation
 ideal_sim = AerSimulator()
 ideal_result = ideal_sim.run(qc_bell_measured, shots=SHOTS).result()
 ideal_counts = ideal_result.get_counts()
 
-# Noise model approximating typical IBM Quantum hardware error rates:
-# ~0.05% error on single-qubit gates, ~1% on two-qubit gates, ~2% readout error
+# Manually chosen error rates: 0.05% single-qubit, 1% two-qubit, 2% readout.
 noise_model = NoiseModel()
 noise_model.add_all_qubit_quantum_error(depolarizing_error(0.0005, 1), ["h"])
 noise_model.add_all_qubit_quantum_error(depolarizing_error(0.01, 2), ["cx"])
@@ -40,7 +38,7 @@ noisy_counts = noisy_result.get_counts()
 
 fig4 = plot_histogram(
     [ideal_counts, noisy_counts],
-    legend=["Ideal simulation", "Real hardware-like simulation"],
+    legend=["Ideal simulation", "Noisy Aer simulation (manual error model)"],
 )
 fig4.savefig("bell_histogram_qiskit.png", dpi=150)
 print("Saved bell_histogram_qiskit.png")
